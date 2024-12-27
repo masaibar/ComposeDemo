@@ -7,7 +7,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import compose.project.demo.di.Koin
-import compose.project.demo.ui.HomeScreen
+import compose.project.demo.ui.main.MainScreen
 
 fun main() = application {
     Koin.init()
@@ -17,6 +17,6 @@ fun main() = application {
         position = WindowPosition(300.dp, 300.dp)
     )
     Window(title = "Local Time App", onCloseRequest = ::exitApplication, state = state) {
-        HomeScreen()
+        MainScreen()
     }
 }

@@ -3,7 +3,7 @@ package compose.project.demo.di
 import compose.project.demo.domain.country.CountryRepository
 import compose.project.demo.domain.country.CountryRepositoryImpl
 import compose.project.demo.domain.greeting.Greeting
-import compose.project.demo.ui.HomeViewmodel
+import compose.project.demo.ui.main.MainViewmodel
 import org.koin.core.context.startKoin
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -16,7 +16,7 @@ object Koin {
 
         // ViewModel
         factory {
-            HomeViewmodel(
+            MainViewmodel(
                 greeting = get(),
                 countryRepository = get()
             )

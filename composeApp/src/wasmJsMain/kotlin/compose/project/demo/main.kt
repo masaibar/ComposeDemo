@@ -3,7 +3,7 @@ package compose.project.demo
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import compose.project.demo.di.Koin
-import compose.project.demo.ui.HomeScreen
+import compose.project.demo.ui.main.MainScreen
 
 @JsModule("@js-joda/timezone")
 external object JsJodaTimeZoneModule
@@ -17,6 +17,6 @@ fun main() {
     ComposeViewport(
         viewportContainerId = "composeApplication"
     ) {
-        HomeScreen()
+        MainScreen()
     }
 }

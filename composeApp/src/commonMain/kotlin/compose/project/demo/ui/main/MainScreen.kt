@@ -1,4 +1,4 @@
-package compose.project.demo.ui
+package compose.project.demo.ui.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -28,10 +28,9 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
-fun HomeScreen(
-) {
+fun MainScreen() {
     KoinContext {
-        val viewModel = koinViewModel<HomeViewmodel>()
+        val viewModel = koinViewModel<MainViewmodel>()
         val uiState by viewModel.uiState.collectAsState()
 
         MaterialTheme {
@@ -94,3 +93,4 @@ fun HomeScreen(
         }
     }
 }
+

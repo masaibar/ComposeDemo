@@ -1,4 +1,4 @@
-package compose.project.demo.ui
+package compose.project.demo.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,7 +34,7 @@ sealed interface Action {
     data class OnCountrySelected(val country: Country) : Action
 }
 
-class HomeViewmodel(
+class MainViewmodel(
     greeting: Greeting,
     private val countryRepository: CountryRepository
 ) : ViewModel() {

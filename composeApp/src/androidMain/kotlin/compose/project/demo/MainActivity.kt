@@ -5,19 +5,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import compose.project.demo.ui.HomeScreen
+import compose.project.demo.ui.main.MainScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            HomeScreen()
+            MainScreen()
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun AppAndroidPreview() {
-    HomeScreen()
+private fun MainScreenAndroidPreview() {
+    MainScreen()
 }

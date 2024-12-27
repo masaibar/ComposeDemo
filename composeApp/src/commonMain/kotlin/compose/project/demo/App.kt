@@ -1,9 +1,11 @@
 package compose.project.demo
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -20,10 +22,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import composedemo.composeapp.generated.resources.Res
+import composedemo.composeapp.generated.resources.eg
+import composedemo.composeapp.generated.resources.fr
+import composedemo.composeapp.generated.resources.id
+import composedemo.composeapp.generated.resources.jp
+import composedemo.composeapp.generated.resources.mx
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -39,9 +49,16 @@ fun App(countries: List<Country> = countries()) {
                 text = timeAtLocation,
                 style = TextStyle(fontSize = 20.sp),
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
             )
-            Row(modifier = Modifier.padding(start = 20.dp, top = 10.dp)) {
+            Row(
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 10.dp
+                )
+            ) {
                 DropdownMenu(
                     expanded = showCountries,
                     onDismissRequest = { showCountries = false }
@@ -53,7 +70,16 @@ fun App(countries: List<Country> = countries()) {
                                 showCountries = false
                             }
                         ) {
-                            Text(country.name)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Image(
+                                    painter = painterResource(country.image),
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .padding(10.dp),
+                                    contentDescription = "flag"
+                                )
+                                Text(country.name)
+                            }
                         }
                     }
                 }
@@ -73,15 +99,36 @@ fun App(countries: List<Country> = countries()) {
 
 data class Country(
     val name: String,
-    val zone: TimeZone
+    val zone: TimeZone,
+    val image: DrawableResource
 )
 
 fun countries(): List<Country> = listOf(
-    Country("Japan", TimeZone.of("Asia/Tokyo")),
-    Country("France", TimeZone.of("Europe/Paris")),
-    Country("Mexico", TimeZone.of("America/Mexico_City")),
-    Country("Indonesia", TimeZone.of("Asia/Jakarta")),
-    Country("Egypt", TimeZone.of("Africa/Cairo"))
+    Country(
+        name = "Japan",
+        zone = TimeZone.of("Asia/Tokyo"),
+        image = Res.drawable.jp
+    ),
+    Country(
+        name = "France",
+        zone = TimeZone.of("Europe/Paris"),
+        image = Res.drawable.fr
+    ),
+    Country(
+        name = "Mexico",
+        zone = TimeZone.of("America/Mexico_City"),
+        image = Res.drawable.mx
+    ),
+    Country(
+        name = "Indonesia",
+        zone = TimeZone.of("Asia/Jakarta"),
+        image = Res.drawable.id
+    ),
+    Country(
+        name = "Egypt",
+        zone = TimeZone.of("Africa/Cairo"),
+        image = Res.drawable.eg
+    )
 )
 
 fun currentTimeAt(country: Country): String {

@@ -1,10 +1,9 @@
-package compose.project.demo
+package compose.project.demo.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import compose.project.demo.domain.country.Country
 import compose.project.demo.domain.country.CountryRepository
-import compose.project.demo.domain.country.CountryRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,13 +26,13 @@ data class UiState(
 }
 
 sealed interface Action {
-    data object OnSelectLocationClick: Action
-    data object OnDropdownMenuDismiss: Action
+    data object OnSelectLocationClick : Action
+    data object OnDropdownMenuDismiss : Action
     data class OnCountrySelected(val country: Country) : Action
 }
 
-class AppViewModel(
-    private val countryRepository: CountryRepository = CountryRepositoryImpl()
+class HomeViewmodel(
+    private val countryRepository: CountryRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState.initialValue())
@@ -54,6 +53,7 @@ class AppViewModel(
                     it.copy(showCountries = true)
                 }
             }
+
             Action.OnDropdownMenuDismiss -> {
                 _uiState.update {
                     it.copy(showCountries = false)

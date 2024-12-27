@@ -1,4 +1,6 @@
-package compose.project.demo
+package compose.project.demo.ui
+
+import compose.project.demo.getPlatform
 
 class Greeting {
     private val platform = getPlatform()

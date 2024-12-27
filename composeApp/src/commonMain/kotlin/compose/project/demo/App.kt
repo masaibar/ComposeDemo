@@ -25,15 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import compose.project.demo.domain.country.Country
-import composedemo.composeapp.generated.resources.Res
-import composedemo.composeapp.generated.resources.eg
-import composedemo.composeapp.generated.resources.fr
-import composedemo.composeapp.generated.resources.id
-import composedemo.composeapp.generated.resources.jp
-import composedemo.composeapp.generated.resources.mx
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -42,9 +35,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun App(
     viewModel: AppViewModel = viewModel { AppViewModel() },
-    countries: List<Country> = countries()
 ) {
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     MaterialTheme {
         var timeAtLocation by remember { mutableStateOf("No location selected") }
@@ -66,7 +58,7 @@ fun App(
                 )
             ) {
                 DropdownMenu(
-                    expanded = uiState.value.showCountries,
+                    expanded = uiState.showCountries,
                     onDismissRequest = {
                         viewModel.onAction(
                             Action.OnCountriesVisibilityToggle(
@@ -75,7 +67,7 @@ fun App(
                         )
                     }
                 ) {
-                    countries.forEach { country ->
+                    uiState.countries.forEach { country ->
                         DropdownMenuItem(
                             onClick = {
                                 timeAtLocation = currentTimeAt(country)
@@ -106,7 +98,7 @@ fun App(
                 onClick = {
                     viewModel.onAction(
                         Action.OnCountriesVisibilityToggle(
-                            isVisible = uiState.value.showCountries.not()
+                            isVisible = uiState.showCountries.not()
                         )
                     )
                 }
@@ -116,34 +108,6 @@ fun App(
         }
     }
 }
-
-fun countries(): List<Country> = listOf(
-    Country(
-        name = "Japan",
-        zone = TimeZone.of("Asia/Tokyo"),
-        image = Res.drawable.jp
-    ),
-    Country(
-        name = "France",
-        zone = TimeZone.of("Europe/Paris"),
-        image = Res.drawable.fr
-    ),
-    Country(
-        name = "Mexico",
-        zone = TimeZone.of("America/Mexico_City"),
-        image = Res.drawable.mx
-    ),
-    Country(
-        name = "Indonesia",
-        zone = TimeZone.of("Asia/Jakarta"),
-        image = Res.drawable.id
-    ),
-    Country(
-        name = "Egypt",
-        zone = TimeZone.of("Africa/Cairo"),
-        image = Res.drawable.eg
-    )
-)
 
 fun currentTimeAt(country: Country): String {
     fun LocalTime.formatted() = "$hour:$minute:$second"

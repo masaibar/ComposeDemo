@@ -37,8 +37,12 @@ fun HomeScreen(
         MaterialTheme {
             Column(
                 modifier = Modifier.padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text(
+                    text = uiState.greeting.greet()
+                )
                 Text(
                     text = uiState.selectedCountry?.currentTimeAt() ?: "No location selected",
                     style = TextStyle(fontSize = 20.sp),
@@ -48,7 +52,7 @@ fun HomeScreen(
                         .align(Alignment.CenterHorizontally)
                 )
                 Row(
-                    modifier = Modifier.padding(start = 20.dp)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     DropdownMenu(
                         expanded = uiState.showCountries,
@@ -80,7 +84,6 @@ fun HomeScreen(
                 }
 
                 Button(
-                    modifier = Modifier.padding(top = 10.dp),
                     onClick = {
                         viewModel.onAction(Action.OnSelectLocationClick)
                     }

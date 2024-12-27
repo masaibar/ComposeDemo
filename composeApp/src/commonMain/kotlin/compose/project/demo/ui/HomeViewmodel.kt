@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import compose.project.demo.domain.country.Country
 import compose.project.demo.domain.country.CountryRepository
+import compose.project.demo.domain.greeting.Greeting
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,13 +12,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class UiState(
+    val greeting: Greeting,
     val countries: List<Country>,
     val selectedCountry: Country?,
     val showCountries: Boolean,
 ) {
     companion object {
-        fun initialValue(): UiState =
+        fun initialValue(greeting: Greeting): UiState =
             UiState(
+                greeting = greeting,
                 countries = emptyList(),
                 selectedCountry = null,
                 showCountries = false
@@ -32,10 +35,11 @@ sealed interface Action {
 }
 
 class HomeViewmodel(
+    greeting: Greeting,
     private val countryRepository: CountryRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState.initialValue())
+    private val _uiState = MutableStateFlow(UiState.initialValue(greeting))
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     init {

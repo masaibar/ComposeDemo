@@ -1,4 +1,4 @@
-package compose.project.demo.ui
+package compose.project.demo.domain.greeting
 
 import compose.project.demo.getPlatform
 

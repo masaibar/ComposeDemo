@@ -24,10 +24,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import compose.project.demo.domain.country.Country
-import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -70,7 +66,7 @@ fun App(
                     uiState.countries.forEach { country ->
                         DropdownMenuItem(
                             onClick = {
-                                timeAtLocation = currentTimeAt(country)
+                                timeAtLocation = country.currentTimeAt()
                                 viewModel.onAction(
                                     Action.OnCountriesVisibilityToggle(
                                         isVisible = false
@@ -107,12 +103,4 @@ fun App(
             }
         }
     }
-}
-
-fun currentTimeAt(country: Country): String {
-    fun LocalTime.formatted() = "$hour:$minute:$second"
-
-    val time = Clock.System.now()
-    val localTime = time.toLocalDateTime(country.zone).time
-    return "The time in ${country.name} is ${localTime.formatted()}"
 }

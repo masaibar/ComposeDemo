@@ -14,9 +14,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -35,12 +32,11 @@ fun App(
     val uiState by viewModel.uiState.collectAsState()
 
     MaterialTheme {
-        var timeAtLocation by remember { mutableStateOf("No location selected") }
         Column(
             modifier = Modifier.padding(20.dp)
         ) {
             Text(
-                text = timeAtLocation,
+                text = uiState.selectedCountry?.currentTimeAt() ?: "No location selected",
                 style = TextStyle(fontSize = 20.sp),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -56,21 +52,14 @@ fun App(
                 DropdownMenu(
                     expanded = uiState.showCountries,
                     onDismissRequest = {
-                        viewModel.onAction(
-                            Action.OnCountriesVisibilityToggle(
-                                isVisible = false
-                            )
-                        )
+                        viewModel.onAction(Action.OnDropdownMenuDismiss)
                     }
                 ) {
                     uiState.countries.forEach { country ->
                         DropdownMenuItem(
                             onClick = {
-                                timeAtLocation = country.currentTimeAt()
                                 viewModel.onAction(
-                                    Action.OnCountriesVisibilityToggle(
-                                        isVisible = false
-                                    )
+                                    Action.OnCountrySelected(country)
                                 )
                             }
                         ) {
@@ -92,11 +81,7 @@ fun App(
             Button(
                 modifier = Modifier.padding(top = 10.dp),
                 onClick = {
-                    viewModel.onAction(
-                        Action.OnCountriesVisibilityToggle(
-                            isVisible = uiState.showCountries.not()
-                        )
-                    )
+                    viewModel.onAction(Action.OnSelectLocationClick)
                 }
             ) {
                 Text("Select Location")

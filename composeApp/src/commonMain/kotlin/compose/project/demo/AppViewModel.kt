@@ -13,19 +13,23 @@ import kotlinx.coroutines.launch
 
 data class UiState(
     val countries: List<Country>,
+    val selectedCountry: Country?,
     val showCountries: Boolean,
 ) {
     companion object {
         fun initialValue(): UiState =
             UiState(
                 countries = emptyList(),
+                selectedCountry = null,
                 showCountries = false
             )
     }
 }
 
 sealed interface Action {
-    data class OnCountriesVisibilityToggle(val isVisible: Boolean) : Action
+    data object OnSelectLocationClick: Action
+    data object OnDropdownMenuDismiss: Action
+    data class OnCountrySelected(val country: Country) : Action
 }
 
 class AppViewModel(
@@ -45,9 +49,23 @@ class AppViewModel(
 
     fun onAction(action: Action) {
         when (action) {
-            is Action.OnCountriesVisibilityToggle -> {
+            Action.OnSelectLocationClick -> {
                 _uiState.update {
-                    it.copy(showCountries = action.isVisible)
+                    it.copy(showCountries = true)
+                }
+            }
+            Action.OnDropdownMenuDismiss -> {
+                _uiState.update {
+                    it.copy(showCountries = false)
+                }
+            }
+
+            is Action.OnCountrySelected -> {
+                _uiState.update {
+                    it.copy(
+                        selectedCountry = action.country,
+                        showCountries = false
+                    )
                 }
             }
         }

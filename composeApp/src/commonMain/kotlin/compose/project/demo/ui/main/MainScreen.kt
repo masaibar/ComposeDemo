@@ -33,64 +33,72 @@ fun MainScreen() {
         val viewModel = koinViewModel<MainViewmodel>()
         val uiState by viewModel.uiState.collectAsState()
 
-        MaterialTheme {
-            Column(
-                modifier = Modifier.padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+        MainScreen(
+            uiState = uiState,
+            onAction = viewModel::onAction
+        )
+    }
+}
+
+@Composable
+fun MainScreen(
+    uiState: UiState,
+    onAction: (Action) -> Unit
+) {
+    MaterialTheme {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = uiState.greeting.greet()
+            )
+            Text(
+                text = uiState.selectedCountry?.currentTimeAt() ?: "No location selected",
+                style = TextStyle(fontSize = 20.sp),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = uiState.greeting.greet()
-                )
-                Text(
-                    text = uiState.selectedCountry?.currentTimeAt() ?: "No location selected",
-                    style = TextStyle(fontSize = 20.sp),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterHorizontally)
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth()
+                DropdownMenu(
+                    expanded = uiState.showCountries,
+                    onDismissRequest = {
+                        onAction(Action.OnDropdownMenuDismiss)
+                    }
                 ) {
-                    DropdownMenu(
-                        expanded = uiState.showCountries,
-                        onDismissRequest = {
-                            viewModel.onAction(Action.OnDropdownMenuDismiss)
-                        }
-                    ) {
-                        uiState.countries.forEach { country ->
-                            DropdownMenuItem(
-                                onClick = {
-                                    viewModel.onAction(
-                                        Action.OnCountrySelected(country)
-                                    )
-                                }
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Image(
-                                        painter = painterResource(country.image),
-                                        modifier = Modifier
-                                            .size(50.dp)
-                                            .padding(10.dp),
-                                        contentDescription = "flag"
-                                    )
-                                    Text(country.name)
-                                }
+                    uiState.countries.forEach { country ->
+                        DropdownMenuItem(
+                            onClick = {
+                                onAction(Action.OnCountrySelected(country))
+                            }
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Image(
+                                    painter = painterResource(country.image),
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .padding(10.dp),
+                                    contentDescription = "flag"
+                                )
+                                Text(country.name)
                             }
                         }
                     }
                 }
+            }
 
-                Button(
-                    onClick = {
-                        viewModel.onAction(Action.OnSelectLocationClick)
-                    }
-                ) {
-                    Text("Select Location")
+            Button(
+                onClick = {
+                    onAction(Action.OnSelectLocationClick)
                 }
+            ) {
+                Text("Select Location")
             }
         }
     }
 }
-

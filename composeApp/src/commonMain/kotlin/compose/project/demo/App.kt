@@ -12,6 +12,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import composedemo.composeapp.generated.resources.Res
 import composedemo.composeapp.generated.resources.eg
 import composedemo.composeapp.generated.resources.fr
@@ -38,9 +40,13 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App(countries: List<Country> = countries()) {
+fun App(
+    viewModel: AppViewModel = viewModel { AppViewModel() },
+    countries: List<Country> = countries()
+) {
+    val uiState = viewModel.uiState.collectAsState()
+
     MaterialTheme {
-        var showCountries by remember { mutableStateOf(false) }
         var timeAtLocation by remember { mutableStateOf("No location selected") }
         Column(
             modifier = Modifier.padding(20.dp)
@@ -60,14 +66,24 @@ fun App(countries: List<Country> = countries()) {
                 )
             ) {
                 DropdownMenu(
-                    expanded = showCountries,
-                    onDismissRequest = { showCountries = false }
+                    expanded = uiState.value.showCountries,
+                    onDismissRequest = {
+                        viewModel.onAction(
+                            Action.OnCountriesVisibilityToggle(
+                                isVisible = false
+                            )
+                        )
+                    }
                 ) {
                     countries.forEach { country ->
                         DropdownMenuItem(
                             onClick = {
                                 timeAtLocation = currentTimeAt(country)
-                                showCountries = false
+                                viewModel.onAction(
+                                    Action.OnCountriesVisibilityToggle(
+                                        isVisible = false
+                                    )
+                                )
                             }
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -88,7 +104,11 @@ fun App(countries: List<Country> = countries()) {
             Button(
                 modifier = Modifier.padding(top = 10.dp),
                 onClick = {
-                    showCountries = !showCountries
+                    viewModel.onAction(
+                        Action.OnCountriesVisibilityToggle(
+                            isVisible = uiState.value.showCountries.not()
+                        )
+                    )
                 }
             ) {
                 Text("Select Location")

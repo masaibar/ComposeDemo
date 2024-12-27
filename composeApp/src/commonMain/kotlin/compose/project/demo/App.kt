@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import compose.project.demo.domain.country.Country
 import composedemo.composeapp.generated.resources.Res
 import composedemo.composeapp.generated.resources.eg
 import composedemo.composeapp.generated.resources.fr
@@ -34,7 +35,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -116,12 +116,6 @@ fun App(
         }
     }
 }
-
-data class Country(
-    val name: String,
-    val zone: TimeZone,
-    val image: DrawableResource
-)
 
 fun countries(): List<Country> = listOf(
     Country(

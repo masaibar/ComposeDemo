@@ -68,6 +68,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
+            implementation(libs.androidx.navigation.compose)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)

@@ -21,10 +21,20 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinContext
 import org.koin.compose.viewmodel.koinViewModel
+
+internal const val mainScreenRoute = "main"
+
+fun NavGraphBuilder.mainNavGraph() {
+    composable(mainScreenRoute) {
+        MainScreen()
+    }
+}
 
 @Composable
 @Preview
